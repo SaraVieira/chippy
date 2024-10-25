@@ -1,6 +1,7 @@
 import { SPRITES } from "./const";
 import { Keyboard } from "./keyboard";
 import { Screen } from "./screen";
+import { Speaker } from "./speaker";
 
 export class CPU {
   renderer: Screen;
@@ -15,10 +16,17 @@ export class CPU {
   paused: boolean;
   speed: number;
   i: number;
+  speaker: Speaker;
 
-  constructor(renderer: Screen, keyboard: Keyboard) {
+  constructor(
+    renderer: Screen,
+    keyboard: Keyboard,
+    speaker: Speaker,
+    options?: { speed?: number }
+  ) {
     this.renderer = renderer;
     this.keyboard = keyboard;
+    this.speaker = speaker;
     this.memory = new Uint8Array(4096);
 
     this.registers8 = new Uint8Array(16);
@@ -38,7 +46,7 @@ export class CPU {
 
     this.paused = false;
 
-    this.speed = 20;
+    this.speed = options?.speed || 30;
   }
 
   togglePause() {
@@ -88,11 +96,11 @@ export class CPU {
   }
 
   playSound() {
-    // if (this.soundTimer > 0) {
-    //     this.speaker.play(440);
-    // } else {
-    //     this.speaker.stop();
-    // }
+    if (this.soundTimer > 0) {
+      this.speaker.play(440);
+    } else {
+      this.speaker.stop();
+    }
   }
 
   executeInstruction(opcode: number) {

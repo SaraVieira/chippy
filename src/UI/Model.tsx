@@ -49,7 +49,8 @@ type GLTFResult = GLTF & {
 
 export function Model(
   props: JSX.IntrinsicElements["group"] & {
-    onButtonClick: () => void;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onButtonClick: (e: any) => void;
     HTML: React.ReactNode;
   }
 ) {
@@ -154,9 +155,9 @@ export function Model(
               position={[36.225, 9.645, -51.082]}
             >
               <Html
-                scale={9.5}
+                scale={[8.9, 8.8, 8.9]}
                 rotation={[-Math.PI / 2, Math.PI / 2, 0]}
-                position={[0, 0, 0]}
+                position={[-1, -0.5, -0.25]}
                 transform
                 occlude="blending"
               >
@@ -185,7 +186,22 @@ export function Model(
             material={materials.Button_1_texture}
             onClick={props.onButtonClick}
             position={[35.313, 32.813, -31.25]}
-          />
+          >
+            <Html
+              transform
+              scale={10}
+              rotation={[Math.PI / 2, Math.PI / 2, -Math.PI / 2]}
+            >
+              <label className="w-7 h-4  block">
+                <input
+                  className="hidden"
+                  type="file"
+                  id="rom"
+                  onChange={props.onButtonClick}
+                />
+              </label>
+            </Html>
+          </mesh>
           <mesh
             castShadow
             receiveShadow

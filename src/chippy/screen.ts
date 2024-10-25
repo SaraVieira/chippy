@@ -1,6 +1,6 @@
 import { COLS, ROWS } from "./const";
 
-type Colors = {
+export type Colors = {
   fill?: string;
   bg?: string;
 };

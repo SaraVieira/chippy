@@ -1,3 +1,6 @@
+export const ROWS = 32;
+export const COLS = 64;
+
 export const SPRITES = [
   0xf0,
   0x90,

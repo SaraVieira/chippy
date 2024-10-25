@@ -5,36 +5,37 @@ import { Screen } from "./screen";
 import { useEffect, useRef, useState } from "react";
 import { loadChippy } from "./chippy/main";
 import { Canvas } from "@react-three/fiber";
-import { Html, Stage } from "@react-three/drei";
+import { Html, OrbitControls, Stage } from "@react-three/drei";
 import { Model } from "./Model";
 
 const Main = () => {
-  const [rendered, setRendered] = useState(false);
   return (
     <>
       <Stage adjustCamera={1.5} preset={"rembrandt"} environment={"sunset"}>
         <Model
-          onAfterRender={() => setRendered(true)}
+          onButtonClick={() => console.log("sup")}
           rotation={[0, -Math.PI / 2, 0]}
+          HTML={
+            <div className="bg-blue-300">
+              <ChippyScreen />
+            </div>
+          }
         />
-        <Html className="-mt-[260px] -ml-[179px]">
-          <ChippyScreen />
-        </Html>
+        <OrbitControls />
       </Stage>
     </>
   );
 };
 
-const ChippyScreen = () => {
+const ChippyScreen = ({ rom }: { rom: ArrayBuffer }) => {
   const [hidden, setHidden] = useState(true);
   const ref = useRef<HTMLCanvasElement | null>(null);
   const cpu = useRef<CPU | null>(null);
 
   useEffect(() => {
     if (ref.current) {
-      const screen = new Screen(10, ref.current, { fill: "#fff" });
+      const screen = new Screen(10, ref.current, { fill: "#2786a9" });
       const keyboard = new Keyboard();
-      console.log("here");
       cpu.current = new CPU(screen, keyboard);
     }
   }, []);
@@ -57,14 +58,14 @@ const ChippyScreen = () => {
       <div className="crt w-[275px] h-[200px]">
         <canvas ref={ref} className="w-[275px] h-[200px]"></canvas>
       </div>
-      <button
+      {/* <button
         onClick={() => cpu.current!.togglePause()}
         className={hidden ? "hidden" : ""}
       >
         Pause
-      </button>
+      </button> */}
       <input
-        className="relative z-10"
+        className="absolute z-10 top-0"
         type="file"
         id="rom"
         onChange={onRomLoad}

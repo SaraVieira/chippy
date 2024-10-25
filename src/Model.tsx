@@ -1,6 +1,7 @@
 import * as THREE from "three";
-import { useGLTF } from "@react-three/drei";
+import { Html, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
+import { useRef } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -47,7 +48,12 @@ type GLTFResult = GLTF & {
   };
 };
 
-export function Model(props: JSX.IntrinsicElements["group"]) {
+export function Model(
+  props: JSX.IntrinsicElements["group"] & {
+    onButtonClick: () => void;
+    HTML: React.ReactNode;
+  }
+) {
   const { nodes, materials } = useGLTF("/crt.glb") as GLTFResult;
   return (
     <group {...props} dispose={null}>
@@ -135,9 +141,29 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
               castShadow
               receiveShadow
               geometry={nodes.TV_screen_Screen_texturepng_0.geometry}
-              material={materials["Screen_texture.png"]}
+              material={
+                new THREE.MeshPhysicalMaterial({
+                  roughness: 1,
+                  envMapIntensity: 0.9,
+                  clearcoat: 1,
+                  transparent: true,
+                  transmission: 0.95,
+                  opacity: 1,
+                  reflectivity: 0.2,
+                })
+              }
               position={[36.225, 9.645, -51.082]}
-            />
+            >
+              <Html
+                scale={9.5}
+                rotation={[-Math.PI / 2, Math.PI / 2, 0]}
+                position={[0, 0, 0]}
+                transform
+                occlude="blending"
+              >
+                {props.HTML}
+              </Html>
+            </mesh>
           </group>
           <mesh
             castShadow
@@ -158,6 +184,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
             receiveShadow
             geometry={nodes.button_1_Button_1_texture_0.geometry}
             material={materials.Button_1_texture}
+            onClick={props.onButtonClick}
             position={[35.313, 32.813, -31.25]}
           />
           <mesh
@@ -165,6 +192,7 @@ export function Model(props: JSX.IntrinsicElements["group"]) {
             receiveShadow
             geometry={nodes.button_2_Button_2_texture_0.geometry}
             material={materials.Button_2_texture}
+            onClick={props.onButtonClick}
             position={[35.313, 32.812, -40.625]}
           />
           <mesh

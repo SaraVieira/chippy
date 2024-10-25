@@ -17,8 +17,3 @@ body {
   height: 100dvh;
   color: rgba(255, 255, 255, 0.75);
 }
-
-.crt {
-  background-color: rgb(25, 25, 30);
-  position: relative;
-}

@@ -19,7 +19,7 @@ export class Screen {
     this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
     this.colors = {
       fill: colors?.fill || "#000",
-      bg: "white",
+      bg: colors?.bg || "white",
     };
 
     this.canvas.width = COLS * this.scale;

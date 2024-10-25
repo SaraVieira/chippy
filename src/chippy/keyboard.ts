@@ -2,7 +2,7 @@ import { KEYMAP } from "./const";
 
 export class Keyboard {
   keysPressed: { [key: number]: boolean };
-  onNextKeyPress: () => void | null;
+  onNextKeyPress: ((key: number) => void) | null;
   constructor() {
     this.keysPressed = {};
 

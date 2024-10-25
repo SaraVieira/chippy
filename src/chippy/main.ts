@@ -1,4 +1,4 @@
-import { CPU } from "../cpu";
+import { CPU } from "./cpu";
 
 const fps = 60;
 let fpsInterval: number;

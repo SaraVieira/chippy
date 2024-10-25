@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { Html, useGLTF } from "@react-three/drei";
 import { GLTF } from "three-stdlib";
-import { useRef } from "react";
 
 type GLTFResult = GLTF & {
   nodes: {

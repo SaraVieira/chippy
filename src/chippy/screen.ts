@@ -58,7 +58,7 @@ export class Screen {
       const y = Math.floor(i / COLS) * this.scale;
 
       if (this.display[i]) {
-        this.ctx.fillStyle = this.colors.fill;
+        this.ctx.fillStyle = this.colors.fill || "#000";
         this.ctx.fillRect(x, y, this.scale, this.scale);
       }
     }

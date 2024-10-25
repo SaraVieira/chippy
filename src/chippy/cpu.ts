@@ -11,9 +11,10 @@ export class CPU {
   delayTimer: number;
   soundTimer: number;
   pc: number;
-  stack: any[];
+  stack: number[];
   paused: boolean;
   speed: number;
+  i: number;
 
   constructor(renderer: Screen, keyboard: Keyboard) {
     this.renderer = renderer;
@@ -27,12 +28,13 @@ export class CPU {
     // Timers
     this.delayTimer = 0;
     this.soundTimer = 0;
+    this.i = 0;
 
     // Program counter. Stores the currently executing address.
     this.pc = 0x200;
 
     // Don't initialize this with a size in order to avoid empty results.
-    this.stack = new Array();
+    this.stack = [];
 
     this.paused = false;
 
@@ -55,15 +57,14 @@ export class CPU {
       this.memory[0x200 + loc] = program[loc];
     }
   }
-  loadRom(rom) {
-    console.log(rom);
+  loadRom(rom: Uint8Array) {
     this.loadProgramIntoMemory(rom);
   }
 
   cycle() {
     for (let i = 0; i < this.speed; i++) {
       if (!this.paused) {
-        let opcode = (this.memory[this.pc] << 8) | this.memory[this.pc + 1];
+        const opcode = (this.memory[this.pc] << 8) | this.memory[this.pc + 1];
         this.executeInstruction(opcode);
       }
     }
@@ -100,10 +101,10 @@ export class CPU {
     this.pc += 2;
 
     // We only need the 2nd nibble, so grab the value of the 2nd nibble and shift it right 8 bits to get rid of everything but that 2nd nibble.
-    let x = (opcode & 0x0f00) >> 8;
+    const x = (opcode & 0x0f00) >> 8;
 
     // We only need the 3rd nibble, so grab the value of the 3rd nibble and shift it right 4 bits to get rid of everything but that 3rd nibble.
-    let y = (opcode & 0x00f0) >> 4;
+    const y = (opcode & 0x00f0) >> 4;
 
     switch (opcode & 0xf000) {
       case 0x0000:
@@ -112,7 +113,7 @@ export class CPU {
             this.renderer.clear();
             break;
           case 0x00ee:
-            this.pc = this.stack.pop();
+            this.pc = this.stack.pop()!;
             break;
         }
 
@@ -159,8 +160,8 @@ export class CPU {
           case 0x3:
             this.registers8[x] ^= this.registers8[y];
             break;
-          case 0x4:
-            let sum = (this.registers8[x] += this.registers8[y]);
+          case 0x4: {
+            const sum = (this.registers8[x] += this.registers8[y]);
 
             this.registers8[0xf] = 0;
 
@@ -170,6 +171,7 @@ export class CPU {
 
             this.registers8[x] = sum;
             break;
+          }
           case 0x5:
             this.registers8[0xf] = 0;
 
@@ -211,14 +213,15 @@ export class CPU {
       case 0xb000:
         this.pc = (opcode & 0xfff) + this.registers8[0];
         break;
-      case 0xc000:
-        let rand = Math.floor(Math.random() * 0xff);
+      case 0xc000: {
+        const rand = Math.floor(Math.random() * 0xff);
 
         this.registers8[x] = rand & (opcode & 0xff);
         break;
-      case 0xd000:
-        let width = 8;
-        let height = opcode & 0xf;
+      }
+      case 0xd000: {
+        const width = 8;
+        const height = opcode & 0xf;
 
         this.registers8[0xf] = 0;
 
@@ -245,6 +248,8 @@ export class CPU {
           }
         }
         break;
+      }
+
       case 0xe000:
         switch (opcode & 0xff) {
           case 0x9e:
@@ -287,14 +292,16 @@ export class CPU {
             break;
           case 0x33:
             // Get the hundreds digit and place it in I.
-            this.memory[this.i] = parseInt(this.registers8[x] / 100);
+            this.memory[this.i] = Math.round(this.registers8[x] / 100);
 
             // Get tens digit and place it in I+1. Gets a value between 0 and 99, then divides by 10 to give us a value
             // between 0 and 9.
-            this.memory[this.i + 1] = parseInt((this.registers8[x] % 100) / 10);
+            this.memory[this.i + 1] = Math.round(
+              (this.registers8[x] % 100) / 10
+            );
 
             // Get the value of the ones (last) digit and place it in I+2. 0 through 9.
-            this.memory[this.i + 2] = parseInt(this.registers8[x] % 10);
+            this.memory[this.i + 2] = Math.round(this.registers8[x] % 10);
             break;
           case 0x55:
             for (let registerIndex = 0; registerIndex <= x; registerIndex++) {

@@ -1,11 +1,11 @@
 import "./style.css";
-import { CPU } from "./cpu";
-import { Keyboard } from "./keyboard";
-import { Screen } from "./screen";
-import { useEffect, useRef, useState } from "react";
+import { CPU } from "./chippy/cpu";
+import { Keyboard } from "./chippy/keyboard";
+import { Screen } from "./chippy/screen";
+import { useEffect, useRef } from "react";
 import { loadChippy } from "./chippy/main";
 import { Canvas } from "@react-three/fiber";
-import { Html, OrbitControls, Stage } from "@react-three/drei";
+import { OrbitControls, Stage } from "@react-three/drei";
 import { Model } from "./Model";
 
 const Main = () => {
@@ -27,8 +27,7 @@ const Main = () => {
   );
 };
 
-const ChippyScreen = ({ rom }: { rom: ArrayBuffer }) => {
-  const [hidden, setHidden] = useState(true);
+const ChippyScreen = () => {
   const ref = useRef<HTMLCanvasElement | null>(null);
   const cpu = useRef<CPU | null>(null);
 
@@ -42,14 +41,12 @@ const ChippyScreen = ({ rom }: { rom: ArrayBuffer }) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onRomLoad = (e: any) => {
-    setHidden(true);
     const rom = e.target.files[0];
     const reader = new FileReader();
     reader.addEventListener("load", function (loadEvent) {
       const buffer = loadEvent.target?.result as ArrayBuffer;
       const uint8Array = new Uint8Array(buffer);
       loadChippy(uint8Array, cpu.current!);
-      setHidden(false);
     });
     reader.readAsArrayBuffer(rom);
   };
@@ -64,12 +61,10 @@ const ChippyScreen = ({ rom }: { rom: ArrayBuffer }) => {
       >
         Pause
       </button> */}
-      <input
-        className="absolute z-10 top-0"
-        type="file"
-        id="rom"
-        onChange={onRomLoad}
-      />
+      <label className="absolute z-10 top-0">
+        sup
+        <input className=" hidden" type="file" id="rom" onChange={onRomLoad} />
+      </label>
     </>
   );
 };

@@ -11,6 +11,7 @@ export class Screen {
   ctx: CanvasRenderingContext2D;
   display: number[];
   colors: Colors;
+
   constructor(scale: number, canvas: HTMLCanvasElement, colors?: Colors) {
     this.display = new Array(COLS * ROWS).fill(0);
     this.scale = scale;

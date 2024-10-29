@@ -18,17 +18,17 @@ export class Keyboard {
   }
 
   onKeyDown(event: KeyboardEvent) {
-    const key = KEYMAP[event.which];
+    const key = KEYMAP[event.key as keyof typeof KEYMAP];
     this.keysPressed[key] = true;
 
     // Make sure onNextKeyPress is initialized and the pressed key is actually mapped to a Chip-8 key
     if (this.onNextKeyPress !== null && key) {
-      this.onNextKeyPress(parseInt(key));
+      this.onNextKeyPress(parseInt(key.toString()));
       this.onNextKeyPress = null;
     }
   }
 
   onKeyUp(event: KeyboardEvent) {
-    this.keysPressed[KEYMAP[event.which]] = false;
+    this.keysPressed[KEYMAP[event.key as keyof typeof KEYMAP]] = false;
   }
 }

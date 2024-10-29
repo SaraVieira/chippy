@@ -15,9 +15,7 @@ export function loadChippy(rom: Uint8Array, cpu: CPU) {
 
   cpu.loadSpritesIntoMemory();
   cpu.loadRom(rom);
-  requestAnimationFrame(() => {
-    step(cpu);
-  });
+  requestAnimationFrame(() => step(cpu));
 }
 
 function step(cpu: CPU) {

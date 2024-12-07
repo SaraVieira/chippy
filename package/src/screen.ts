@@ -1,4 +1,4 @@
-import { COLS, ROWS } from "./const";
+import { COLS, ROWS } from './const';
 
 export type Colors = {
   fill?: string;
@@ -17,10 +17,10 @@ export class Screen {
     this.scale = scale;
 
     this.canvas = canvas;
-    this.ctx = this.canvas.getContext("2d") as CanvasRenderingContext2D;
+    this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     this.colors = {
-      fill: colors?.fill || "#000",
-      bg: colors?.bg || "white",
+      fill: colors?.fill || '#000',
+      bg: colors?.bg || 'white',
     };
 
     this.canvas.width = COLS * this.scale;
@@ -59,7 +59,7 @@ export class Screen {
       const y = Math.floor(i / COLS) * this.scale;
 
       if (this.display[i]) {
-        this.ctx.fillStyle = this.colors.fill || "#000";
+        this.ctx.fillStyle = this.colors.fill || '#000';
         this.ctx.fillRect(x, y, this.scale, this.scale);
       }
     }

@@ -29,7 +29,7 @@ export class Speaker {
       );
 
       // Square wave
-      this.oscillator.type = "square";
+      this.oscillator.type = 'square';
 
       // Connect the gain and start the sound
       this.oscillator.connect(this.gain);

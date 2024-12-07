@@ -1,4 +1,4 @@
-import { KEYMAP } from "./const";
+import { KEYMAP } from './const';
 
 export class Keyboard {
   keysPressed: { [key: number]: boolean };
@@ -9,8 +9,8 @@ export class Keyboard {
     // Some Chip-8 instructions require waiting for the next keypress. We initialize this function elsewhere when needed.
     this.onNextKeyPress = null;
 
-    window.addEventListener("keydown", this.onKeyDown.bind(this), false);
-    window.addEventListener("keyup", this.onKeyUp.bind(this), false);
+    window.addEventListener('keydown', this.onKeyDown.bind(this), false);
+    window.addEventListener('keyup', this.onKeyUp.bind(this), false);
   }
 
   isKeyPressed(keyCode: number) {

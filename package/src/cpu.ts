@@ -1,7 +1,7 @@
-import { SPRITES } from "./const";
-import { Keyboard } from "./keyboard";
-import { Screen } from "./screen";
-import { Speaker } from "./speaker";
+import { SPRITES } from './const';
+import { Keyboard } from './keyboard';
+import { Screen } from './screen';
+import { Speaker } from './speaker';
 
 export class CPU {
   renderer: Screen;
@@ -281,7 +281,7 @@ export class CPU {
           case 0x0a:
             this.paused = true;
 
-            this.keyboard.onNextKeyPress = (key) => {
+            this.keyboard.onNextKeyPress = key => {
               this.registers8[x] = key;
               this.paused = false;
             };
@@ -313,14 +313,16 @@ export class CPU {
             break;
           case 0x55:
             for (let registerIndex = 0; registerIndex <= x; registerIndex++) {
-              this.memory[this.i + registerIndex] =
-                this.registers8[registerIndex];
+              this.memory[this.i + registerIndex] = this.registers8[
+                registerIndex
+              ];
             }
             break;
           case 0x65:
             for (let registerIndex = 0; registerIndex <= x; registerIndex++) {
-              this.registers8[registerIndex] =
-                this.memory[this.i + registerIndex];
+              this.registers8[registerIndex] = this.memory[
+                this.i + registerIndex
+              ];
             }
             break;
         }
@@ -328,7 +330,7 @@ export class CPU {
         break;
 
       default:
-        throw new Error("Unknown opcode " + opcode);
+        throw new Error('Unknown opcode ' + opcode);
     }
   }
 }

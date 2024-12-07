@@ -2,9 +2,9 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, Stage } from "@react-three/drei";
 import { Model } from "./Model";
 import { ScreenUI } from "./Screen";
-import { startChippy } from "../chippy/main";
+// import { startChippy } from "../../package/dist/chippy.esm.js";
+import { startChippy } from "@saravieira/chippy";
 import { useRef } from "react";
-import { Effects } from "./Effects";
 
 const Main = () => {
   const ref = useRef<HTMLCanvasElement | null>(null);
@@ -20,6 +20,7 @@ const Main = () => {
         rom: uint8Array,
         colors: { fill: "#fff" },
         el: ref.current!,
+        speed: 1,
       });
     });
     reader.readAsArrayBuffer(rom);

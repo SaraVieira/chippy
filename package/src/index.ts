@@ -1,7 +1,7 @@
-import { CPU } from "./cpu";
-import { Keyboard } from "./keyboard";
-import { Colors, Screen } from "./screen";
-import { Speaker } from "./speaker";
+import { CPU } from './cpu';
+import { Keyboard } from './keyboard';
+import { Colors, Screen } from './screen';
+import { Speaker } from './speaker';
 
 const fps = 60;
 let fpsInterval: number;
@@ -9,14 +9,14 @@ let now: number;
 let then: number;
 let elapsed: number;
 
-export function loadChippy(rom: Uint8Array, cpu: CPU) {
+export const loadChippy = (rom: Uint8Array, cpu: CPU) => {
   fpsInterval = 1000 / fps;
   then = Date.now();
 
   cpu.loadSpritesIntoMemory();
   cpu.loadRom(rom);
   requestAnimationFrame(() => step(cpu));
-}
+};
 
 function step(cpu: CPU) {
   now = Date.now();
